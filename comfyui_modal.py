@@ -5,7 +5,7 @@ import os
 # --- Configuracao ---
 COMFYUI_DIR = "/root/ComfyUI"
 UI_PORT = 8188
-BUILD_ID = "v21_rgfix"  # Mudar quando adicionar novos nodes (invalida cache).
+BUILD_ID = "v22"  # Mudar quando adicionar novos nodes (invalida cache).
 HF_TOKEN = os.environ.get("HF_TOKEN", "")  # Defina HF_TOKEN nos Secrets do Modal
 
 # =============================================================================
@@ -44,10 +44,11 @@ app = modal.App(name=f"comfyui-{BUILD_ID}")
     min_containers=0,
     scaledown_window=30 * 60,  # 30 min sem uso = desliga
     max_containers=1,
+    allow_concurrent_inputs=1000, # AIOHTTP resolve concurrencia internamente. Evita fila no Proxy do Modal.
     timeout=6 * 60 * 60,  # 6 horas max
     gpu="a10g",
     volumes={f"{COMFYUI_DIR}/models": model_volume},
-    env={"HF_TOKEN": HF_TOKEN},
+    secrets=[modal.Secret.from_name("huggingface-secret-2")],
 )
 # NOTA: @modal.concurrent REMOVIDO — causa erro 405 ao salvar workflows.
 # O proxy do Modal decodifica %2F nos URLs, quebrando /api/userdata/workflows/.

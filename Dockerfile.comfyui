@@ -65,7 +65,8 @@ RUN git clone https://github.com/PozzettiAndrea/ComfyUI-SAM3.git ${COMFYUI_DIR}/
     git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Inpaint-CropAndStitch && \
     git clone https://github.com/1038lab/ComfyUI-JoyCaption.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-JoyCaption && \
     git clone https://github.com/WASasquatch/was-node-suite-comfyui.git ${COMFYUI_DIR}/custom_nodes/was-node-suite-comfyui && \
-    git clone https://github.com/ChangeTheConstants/SeedVarianceEnhancer.git ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer
+    git clone https://github.com/ChangeTheConstants/SeedVarianceEnhancer.git ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer && \
+    git clone https://github.com/peterkickasspeter-civit/ComfyUI-ZImageTurboProgressiveLockedUpscale.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-ZImageTurboProgressiveLockedUpscale
 
 # === Layer 7: Deps dos custom nodes ===
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_LayerStyle && pip install -r requirements.txt || true
@@ -90,6 +91,7 @@ RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-Inpaint-CropAndStitch && pip install 
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-JoyCaption && pip install -r requirements.txt || true
 RUN cd ${COMFYUI_DIR}/custom_nodes/was-node-suite-comfyui && pip install -r requirements.txt || true
 RUN cd ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-ZImageTurboProgressiveLockedUpscale && pip install -r requirements.txt || true
 
 # === Hotfix rgthree-comfy ===
 RUN sed -i 's/resp = svg.format(bg=bg, fg=fg)/resp = svg.replace("{bg}", bg).replace("{fg}", fg)/' \
