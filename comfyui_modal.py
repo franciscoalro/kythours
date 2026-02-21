@@ -5,7 +5,7 @@ import os
 # --- Configuracao ---
 COMFYUI_DIR = "/root/ComfyUI"
 UI_PORT = 8188
-BUILD_ID = "v22"  # Mudar quando adicionar novos nodes (invalida cache).
+BUILD_ID = "v23"  # Mudar quando adicionar novos nodes (invalida cache).
 HF_TOKEN = os.environ.get("HF_TOKEN", "")  # Defina HF_TOKEN nos Secrets do Modal
 
 # =============================================================================
@@ -158,6 +158,11 @@ def run_comfyui():
         {
             "url": "https://huggingface.co/worstplayer/Z-Image_Qwen_3_4b_text_encoder_GGUF/resolve/main/Qwen_3_4b-Q8_0.gguf",
             "path": f"{COMFYUI_DIR}/models/text_encoders/Qwen_3_4b-Q8_0.gguf"
+        },
+        # Qwen3-4b-Z-Image-Engineer-V4-F16
+        {
+            "url": "https://huggingface.co/BennyDaBall/Qwen3-4b-Z-Image-Engineer-V4/resolve/main/Qwen3-4b-Z-Image-Engineer-V4-F16.gguf",
+            "path": f"{COMFYUI_DIR}/models/text_encoders/Qwen3-4b-Z-Image-Engineer-V4-F16.gguf"
         },
         # Upscale Model
         {
