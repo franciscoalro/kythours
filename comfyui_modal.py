@@ -5,7 +5,7 @@ import os
 # --- Configuracao ---
 COMFYUI_DIR = "/root/ComfyUI"
 UI_PORT = 8188
-BUILD_ID = "v23"  # Mudar quando adicionar novos nodes (invalida cache).
+BUILD_ID = "v24"  # Mudar quando adicionar novos nodes (invalida cache).
 HF_TOKEN = os.environ.get("HF_TOKEN", "")  # Defina HF_TOKEN nos Secrets do Modal
 
 # =============================================================================
@@ -168,6 +168,21 @@ def run_comfyui():
         {
             "url": "https://huggingface.co/Thelocallab/2xLexicaRRDBNet_Sharp/resolve/main/2xLexicaRRDBNet_Sharp.pth",
             "path": f"{COMFYUI_DIR}/models/upscale_models/2xLexicaRRDBNet_Sharp.pth"
+        },
+        # Upscale Model for Amazing Z-Image WF
+        {
+            "url": "https://huggingface.co/martin-rizzo/ESRGAN-4x/resolve/main/4x_foolhardy_Remacri.safetensors",
+            "path": f"{COMFYUI_DIR}/models/upscale_models/4x_foolhardy_Remacri.safetensors"
+        },
+        # Amazing Z-Image WF v4.0 Diffusion Model
+        {
+            "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q5_K_S.gguf",
+            "path": f"{COMFYUI_DIR}/models/diffusion_models/z_image_turbo-Q5_K_S.gguf"
+        },
+        # Amazing Z-Image WF v4.0 Text Encoder
+        {
+            "url": "https://huggingface.co/mradermacher/Qwen3-4B-i1-GGUF/resolve/main/Qwen3-4B.i1-Q5_K_S.gguf",
+            "path": f"{COMFYUI_DIR}/models/text_encoders/Qwen3-4B.i1-Q5_K_S.gguf"
         },
         # Workflow JSON (Exemplo)
         {
