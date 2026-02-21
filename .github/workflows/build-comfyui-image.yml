@@ -1,0 +1,55 @@
+name: Build & Push ComfyUI Image to GHCR
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Dockerfile.comfyui'       # Só builda quando o Dockerfile mudar
+  workflow_dispatch:               # Permite rodar manualmente via GitHub UI
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: franciscoalro/kythours-comfyui  # ghcr.io/franciscoalro/kythours-comfyui
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write              # Necessário para fazer push no GHCR
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}  # Token automático, sem config extra!
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value=v21-rgfix
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.comfyui
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Cache entre builds para acelerar rebuilds parciais
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

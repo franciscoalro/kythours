@@ -1,0 +1,101 @@
+# Dockerfile.comfyui
+# ==================
+# Builda a imagem ComfyUI completa (custom nodes + deps) para ser publicada
+# no Docker Hub e reutilizada em qualquer conta Modal.
+#
+# BUILD & PUSH:
+#   docker build -t SEU_USUARIO/comfyui-modal:v21-rgfix -f Dockerfile.comfyui .
+#   docker push SEU_USUARIO/comfyui-modal:v21-rgfix
+#
+# USO NO comfyui_modal.py:
+#   comfyui_image = modal.Image.from_registry("SEU_USUARIO/comfyui-modal:v21-rgfix")
+
+FROM python:3.11-slim
+
+# === Layer 1: Deps do sistema ===
+RUN apt-get update && apt-get install -y \
+    git wget curl \
+    libgl1 libglib2.0-0 ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# === Layer 2: PyTorch + CUDA ===
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir \
+        torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 \
+        --index-url https://download.pytorch.org/whl/cu121
+
+# === Layer 3: ComfyUI ===
+ENV COMFYUI_DIR=/root/ComfyUI
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git ${COMFYUI_DIR} && \
+    rm -rf ${COMFYUI_DIR}/models && mkdir -p ${COMFYUI_DIR}/models
+
+# === Layer 4: Deps base ComfyUI ===
+RUN cd ${COMFYUI_DIR} && pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir xformers==0.0.28.post3 --index-url https://download.pytorch.org/whl/cu121 && \
+    pip install --no-cache-dir --upgrade transformers && \
+    pip install --no-cache-dir accelerate qwen-vl-utils opencv-python scipy timm einops sageattention pandas gguf
+
+# === Layer 5: Custom Nodes (lote 1) ===
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Manager && \
+    git clone https://github.com/chflame163/ComfyUI_LayerStyle.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_LayerStyle && \
+    git clone https://github.com/kijai/ComfyUI-KJNodes.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-KJNodes && \
+    git clone https://github.com/city96/ComfyUI-GGUF.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-GGUF && \
+    git clone https://github.com/rgthree/rgthree-comfy.git ${COMFYUI_DIR}/custom_nodes/rgthree-comfy && \
+    git clone https://github.com/Azornes/Comfyui-Resolution-Master.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Resolution-Master
+
+# === Layer 6: Custom Nodes (lote 2) ===
+RUN git clone https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-SeedVR2_VideoUpscaler && \
+    git clone https://github.com/aistudynow/ComfyUI-QwenVL.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-QwenVL && \
+    git clone https://github.com/yolain/ComfyUI-Easy-Use.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Easy-Use && \
+    git clone https://github.com/PozzettiAndrea/ComfyUI-DepthAnythingV3.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-DepthAnythingV3 && \
+    git clone https://github.com/r-vage/ComfyUI-RvTools_v2.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-RvTools && \
+    git clone https://github.com/fannovel16/comfyui_controlnet_aux.git ${COMFYUI_DIR}/custom_nodes/comfyui_controlnet_aux && \
+    git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Custom-Scripts && \
+    git clone https://github.com/chibiace/ComfyUI-Chibi-Nodes.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Chibi-Nodes && \
+    git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Impact-Pack && \
+    git clone https://github.com/PGCRT/CRT-Nodes.git ${COMFYUI_DIR}/custom_nodes/CRT-Nodes && \
+    git clone https://github.com/ClownsharkBatwing/RES4LYF.git ${COMFYUI_DIR}/custom_nodes/RES4LYF && \
+    git clone https://github.com/gseth/ControlAltAI-Nodes.git ${COMFYUI_DIR}/custom_nodes/ControlAltAI-Nodes && \
+    git clone https://github.com/jags111/efficiency-nodes-comfyui.git ${COMFYUI_DIR}/custom_nodes/efficiency-nodes-comfyui && \
+    git clone https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Impact-Subpack && \
+    git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git --recursive ${COMFYUI_DIR}/custom_nodes/ComfyUI_UltimateSDUpscale
+
+# === Layer 6b: Custom Nodes (lote 3 - novos) ===
+RUN git clone https://github.com/PozzettiAndrea/ComfyUI-SAM3.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-SAM3 && \
+    git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Inpaint-CropAndStitch && \
+    git clone https://github.com/1038lab/ComfyUI-JoyCaption.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-JoyCaption && \
+    git clone https://github.com/WASasquatch/was-node-suite-comfyui.git ${COMFYUI_DIR}/custom_nodes/was-node-suite-comfyui && \
+    git clone https://github.com/ChangeTheConstants/SeedVarianceEnhancer.git ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer
+
+# === Layer 7: Deps dos custom nodes ===
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_LayerStyle && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-KJNodes && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-GGUF && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-SeedVR2_VideoUpscaler && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-QwenVL && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-Easy-Use && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-DepthAnythingV3 && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-RvTools && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/comfyui_controlnet_aux && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-Impact-Pack && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/CRT-Nodes && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/RES4LYF && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ControlAltAI-Nodes && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/efficiency-nodes-comfyui && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-Impact-Subpack && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_UltimateSDUpscale && pip install -r requirements.txt || true
+RUN pip install --no-cache-dir ultralytics
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-SAM3 && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-Inpaint-CropAndStitch && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-JoyCaption && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/was-node-suite-comfyui && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer && pip install -r requirements.txt || true
+
+# === Hotfix rgthree-comfy ===
+RUN sed -i 's/resp = svg.format(bg=bg, fg=fg)/resp = svg.replace("{bg}", bg).replace("{fg}", fg)/' \
+    ${COMFYUI_DIR}/custom_nodes/rgthree-comfy/py/server/routes_config.py
+
+# Porta padrão
+EXPOSE 8188
+
+CMD ["python", "/root/ComfyUI/main.py", "--listen", "0.0.0.0", "--port", "8188"]
