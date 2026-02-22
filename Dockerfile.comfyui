@@ -65,17 +65,20 @@ RUN git clone https://github.com/PozzettiAndrea/ComfyUI-SAM3.git ${COMFYUI_DIR}/
     git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Inpaint-CropAndStitch && \
     git clone https://github.com/1038lab/ComfyUI-JoyCaption.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-JoyCaption && \
     git clone https://github.com/WASasquatch/was-node-suite-comfyui.git ${COMFYUI_DIR}/custom_nodes/was-node-suite-comfyui && \
-    git clone https://github.com/ChangeTheConstants/SeedVarianceEnhancer.git ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer && \
-    git clone https://github.com/peterkickasspeter-civit/ComfyUI-ZImageTurboProgressiveLockedUpscale.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-ZImageTurboProgressiveLockedUpscale && \
+    git clone https://github.com/ChangeTheConstants/SeedVarianceEnhancer.git ${COMFYUI_DIR}/custom_nodes/SeedVarianceEnhancer
+
+RUN git clone https://github.com/peterkickasspeter-civit/ComfyUI-ZImageTurboProgressiveLockedUpscale.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-ZImageTurboProgressiveLockedUpscale && \
     git clone https://github.com/Sean-Bradley/ComfyUI-Image-Compare.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Image-Compare && \
     git clone https://github.com/1038lab/ComfyUI-QwenVL.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-QwenVL && \
-    git clone https://github.com/smthemex/ComfyUI_FlashVSR.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_FlashVSR && \
-    git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Custom-Scripts && \
+    git clone https://github.com/smthemex/ComfyUI_FlashVSR.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_FlashVSR
+
+RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Custom-Scripts && \
     git clone https://github.com/BlenderNeko/ComfyUI_Noise.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Noise && \
     git clone https://github.com/ShmuelRonen/ComfyUI_Gemini_Flash.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Gemini_Flash && \
     git clone https://github.com/ShmuelRonen/ComfyUI_pixtral_vision.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_vision && \
-    git clone https://github.com/ShmuelRonen/ComfyUI_pixtral_large.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_large && \
-    git clone https://github.com/chrisgoringe/cg-use-everywhere.git ${COMFYUI_DIR}/custom_nodes/cg-use-everywhere && \
+    git clone https://github.com/ShmuelRonen/ComfyUI_pixtral_large.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_large
+
+RUN git clone https://github.com/chrisgoringe/cg-use-everywhere.git ${COMFYUI_DIR}/custom_nodes/cg-use-everywhere && \
     git clone https://github.com/jakechai/ComfyUI-JakeUpgrade.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-JakeUpgrade && \
     git clone https://github.com/cubiq/ComfyUI_essentials.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_essentials && \
     git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Comfyroll_CustomNodes && \
