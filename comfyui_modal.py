@@ -5,7 +5,7 @@ import os
 # --- Configuracao ---
 COMFYUI_DIR = "/root/ComfyUI"
 UI_PORT = 8188
-BUILD_ID = "v29"  # Mudar quando adicionar novos nodes (invalida cache).
+BUILD_ID = "v30"  # Mudar quando adicionar novos nodes (invalida cache).
 HF_TOKEN = os.environ.get("HF_TOKEN", "")  # Defina HF_TOKEN nos Secrets do Modal
 
 # =============================================================================
@@ -188,6 +188,21 @@ def run_comfyui():
         {
             "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/example_workflow.json",
             "path": f"{COMFYUI_DIR}/user/default/workflows/z_image_turbo_workflow.json"
+        },
+        # Qwen-Image-Edit-2511-Lightning
+        {
+            "url": "https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+            "path": f"{COMFYUI_DIR}/models/loras/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors"
+        },
+        # Qwen 2.5 Text Encoder FP8
+        {
+            "url": "https://huggingface.co/Comfy-Org/HunyuanVideo_1.5_repackaged/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors",
+            "path": f"{COMFYUI_DIR}/models/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors"
+        },
+        # Qwen Image VAE
+        {
+            "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors",
+            "path": f"{COMFYUI_DIR}/models/vae/qwen_image_vae.safetensors"
         },
         # ControlNet Union 2.1 (in controlnet folder)
         {
