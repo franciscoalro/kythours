@@ -72,7 +72,9 @@ RUN git clone https://github.com/PozzettiAndrea/ComfyUI-SAM3.git ${COMFYUI_DIR}/
     git clone https://github.com/smthemex/ComfyUI_FlashVSR.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_FlashVSR && \
     git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-Custom-Scripts && \
     git clone https://github.com/BlenderNeko/ComfyUI_Noise.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Noise && \
-    git clone https://github.com/ShmuelRonen/ComfyUI_Gemini_Flash.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Gemini_Flash
+    git clone https://github.com/ShmuelRonen/ComfyUI_Gemini_Flash.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Gemini_Flash && \
+    git clone https://github.com/ShmuelRonen/ComfyUI_pixtral_vision.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_vision && \
+    git clone https://github.com/ShmuelRonen/ComfyUI_pixtral_large.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_large
 
 # === Layer 7: Deps dos custom nodes ===
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_LayerStyle && pip install -r requirements.txt || true
@@ -104,6 +106,8 @@ RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_FlashVSR && pip install -r requiremen
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-Custom-Scripts && pip install -r requirements.txt || true
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_Noise && pip install -r requirements.txt || true
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_Gemini_Flash && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_vision && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_large && pip install -r requirements.txt || true
 
 # === Hotfix rgthree-comfy ===
 RUN sed -i 's/resp = svg.format(bg=bg, fg=fg)/resp = svg.replace("{bg}", bg).replace("{fg}", fg)/' \
