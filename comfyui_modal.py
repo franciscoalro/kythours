@@ -5,7 +5,7 @@ import os
 # --- Configuracao ---
 COMFYUI_DIR = "/root/ComfyUI"
 UI_PORT = 8188
-BUILD_ID = "v34"  # Mudar quando adicionar novos nodes (invalida cache).
+BUILD_ID = "v35"  # Mudar quando adicionar novos nodes (invalida cache).
 HF_TOKEN = os.environ.get("HF_TOKEN", "")  # Defina HF_TOKEN nos Secrets do Modal
 
 # =============================================================================
@@ -71,6 +71,8 @@ def run_comfyui():
     os.makedirs(f"{COMFYUI_DIR}/models/controlnet", exist_ok=True)
     os.makedirs(f"{COMFYUI_DIR}/models/model_patches", exist_ok=True)
     os.makedirs(f"{COMFYUI_DIR}/output", exist_ok=True)
+    os.makedirs(f"{COMFYUI_DIR}/models/unet", exist_ok=True)
+    os.makedirs(f"{COMFYUI_DIR}/models/ultralytics/bbox", exist_ok=True)
 
     # --- Validacao inteligente de arquivos no volume ---
     # Tamanhos minimos esperados (em MB) para arquivos criticos grandes.
@@ -218,8 +220,39 @@ def run_comfyui():
         {
             "url": "https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union.safetensors",
             "path": f"{COMFYUI_DIR}/models/model_patches/Z-Image-Turbo-Fun-Controlnet-Union.safetensors"
+        },
+        # Flux Model
+        {
+            "url": "https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-4b/resolve/main/split_files/diffusion_models/flux-2-klein-4b.safetensors",
+            "path": f"{COMFYUI_DIR}/models/diffusion_models/flux-2-klein-4b.safetensors"
+        },
+        # Flux VAE
+        {
+            "url": "https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-4b/resolve/main/split_files/vae/flux2-vae.safetensors",
+            "path": f"{COMFYUI_DIR}/models/vae/flux2-vae.safetensors"
+        },
+        # Qwen-Image-Edit-2511-Q5_K_M GGUF
+        {
+            "url": "https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/main/qwen-image-edit-2511-Q5_K_M.gguf",
+            "path": f"{COMFYUI_DIR}/models/unet/qwen-image-edit-2511-Q5_K_M.gguf"
+        },
+        # SDXL CivitAI Model
+        {
+            "url": "https://civitai.com/api/download/models/2043971",
+            "path": f"{COMFYUI_DIR}/models/checkpoints/SDXL_v2043971.safetensors"
+        },
+        # Ultralytics Female Breast Detection
+        {
+            "url": "https://huggingface.co/ashllay/YOLO_Models/resolve/e07b01219ff1807e1885015f439d788b038f49bd/bbox/female-breast-v4.0-fantasy.pt",
+            "path": f"{COMFYUI_DIR}/models/ultralytics/bbox/female-breast-v4.0-fantasy.pt"
+        },
+        # Ultralytics Female Body Detection
+        {
+            "url": "https://civitai.com/api/download/models/2056142",
+            "path": f"{COMFYUI_DIR}/models/ultralytics/bbox/female-body-v2056142.pt"
         }
     ]
+
 
     # Adicionar todos os LoRAs do Kitoalro (Steps 100 a 900 + Final)
     hf_repo = "kythours/kitoalro"
