@@ -77,7 +77,8 @@ RUN git clone https://github.com/PozzettiAndrea/ComfyUI-SAM3.git ${COMFYUI_DIR}/
     git clone https://github.com/ShmuelRonen/ComfyUI_pixtral_large.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_large && \
     git clone https://github.com/chrisgoringe/cg-use-everywhere.git ${COMFYUI_DIR}/custom_nodes/cg-use-everywhere && \
     git clone https://github.com/jakechai/ComfyUI-JakeUpgrade.git ${COMFYUI_DIR}/custom_nodes/ComfyUI-JakeUpgrade && \
-    git clone https://github.com/cubiq/ComfyUI_essentials.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_essentials
+    git clone https://github.com/cubiq/ComfyUI_essentials.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_essentials && \
+    git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git ${COMFYUI_DIR}/custom_nodes/ComfyUI_Comfyroll_CustomNodes
 
 # === Layer 7: Deps dos custom nodes ===
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_LayerStyle && pip install -r requirements.txt || true
@@ -114,6 +115,7 @@ RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_pixtral_large && pip install -r requi
 RUN cd ${COMFYUI_DIR}/custom_nodes/cg-use-everywhere && pip install -r requirements.txt || true
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI-JakeUpgrade && pip install -r requirements.txt || true
 RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_essentials && pip install -r requirements.txt || true
+RUN cd ${COMFYUI_DIR}/custom_nodes/ComfyUI_Comfyroll_CustomNodes && pip install -r requirements.txt || true
 
 
 # === Hotfix rgthree-comfy ===
